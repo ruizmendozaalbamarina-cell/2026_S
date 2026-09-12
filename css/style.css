@@ -541,14 +541,15 @@ h1 span {
 }
 
 
-/* =================================
-   NUBES
+/* ================================= 
+   NUBES ☁️
 ================================= */
 
 .nubes {
     position: absolute;
-
     inset: 0;
+
+    z-index: 15;
 
     pointer-events: none;
 }
@@ -567,7 +568,13 @@ h1 span {
 
     cursor: pointer;
 
+    /* IMPORTANTE PARA TELÉFONOS */
     pointer-events: auto;
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
+
+    z-index: 16;
 
     transition:
         opacity 1s ease,
@@ -583,7 +590,11 @@ h1 span {
     background: inherit;
 
     border-radius: 50%;
+
+    /* Las bolitas no bloquean el toque */
+    pointer-events: none;
 }
+
 
 .nube span:nth-child(1) {
     width: 55%;
@@ -593,6 +604,7 @@ h1 span {
     bottom: 30%;
 }
 
+
 .nube span:nth-child(2) {
     width: 50%;
     height: 110%;
@@ -600,6 +612,7 @@ h1 span {
     left: 35%;
     bottom: 20%;
 }
+
 
 .nube span:nth-child(3) {
     width: 42%;
@@ -617,12 +630,14 @@ h1 span {
     left: -5%;
 }
 
+
 .nube2 {
     top: 43%;
     right: -8%;
 
     transform: scale(0.8);
 }
+
 
 .nube3 {
     top: 58%;
@@ -641,6 +656,8 @@ h1 span {
         translateY(-100px)
         translateX(80px)
         scale(0.6);
+
+    pointer-events: none;
 }
 
 
