@@ -1,5 +1,5 @@
 // ============================================
-// CINCO MINUTOS CONTIGO
+// CINCO MINUTOS CONTIGO 🌷
 // JavaScript completo
 // ============================================
 
@@ -28,7 +28,7 @@ if (boton) {
 
 
 // ============================================
-// 2. ESCENA: DEJAR ATRÁS LA SEMANA
+// 2. ESCENA: DEJAR ATRÁS LA SEMANA ☁️
 // ============================================
 
 function mostrarDescanso() {
@@ -49,19 +49,34 @@ function mostrarDescanso() {
 
             <div class="nubes">
 
-                <div class="nube nube1">
+                <div
+                    class="nube nube1"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Soltar primera preocupación"
+                >
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
 
-                <div class="nube nube2">
+                <div
+                    class="nube nube2"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Soltar segunda preocupación"
+                >
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
 
-                <div class="nube nube3">
+                <div
+                    class="nube nube3"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Soltar tercera preocupación"
+                >
                     <span></span>
                     <span></span>
                     <span></span>
@@ -96,11 +111,12 @@ function mostrarDescanso() {
     `;
 
     activarNubes();
+
 }
 
 
 // ============================================
-// 3. ACTIVAR LAS NUBES
+// 3. ACTIVAR LAS NUBES ☁️
 // ============================================
 
 function activarNubes() {
@@ -110,10 +126,17 @@ function activarNubes() {
 
     let restantes = nubes.length;
 
+
     nubes.forEach((nube) => {
 
-        nube.addEventListener("click", () => {
+        function soltarNube(evento) {
 
+            if (evento) {
+                evento.preventDefault();
+                evento.stopPropagation();
+            }
+
+            // Evitar tocar la misma nube dos veces
             if (nube.classList.contains("soltada")) {
                 return;
             }
@@ -126,11 +149,69 @@ function activarNubes() {
 
             contador.textContent = restantes;
 
+
+            // Cuando ya no quedan nubes
             if (restantes === 0) {
+
                 terminarDescanso();
+
             }
 
-        });
+        }
+
+
+        // =====================================
+        // TOQUE EN CELULAR Y MOUSE
+        // =====================================
+
+        nube.addEventListener(
+            "pointerup",
+            soltarNube
+        );
+
+
+        // =====================================
+        // COMPATIBILIDAD CON ALGUNOS NAVEGADORES
+        // =====================================
+
+        nube.addEventListener(
+            "click",
+            (evento) => {
+
+                // Si el navegador ya disparó pointerup,
+                // no hacemos nada aquí.
+
+                if (
+                    nube.classList.contains("soltada")
+                ) {
+                    return;
+                }
+
+                soltarNube(evento);
+
+            }
+        );
+
+
+        // =====================================
+        // TECLADO
+        // =====================================
+
+        nube.addEventListener(
+            "keydown",
+            (evento) => {
+
+                if (
+                    evento.key === "Enter" ||
+                    evento.key === " "
+                ) {
+
+                    soltarNube(evento);
+
+                }
+
+            }
+        );
 
     });
 
@@ -156,9 +237,11 @@ function mostrarFrase(nube) {
 
     };
 
+
     const nombre = [...nube.classList].find(clase => {
         return frases[clase];
     });
+
 
     const frase = document.createElement("div");
 
@@ -168,18 +251,36 @@ function mostrarFrase(nube) {
         <p>${frases[nombre]}</p>
     `;
 
-    document.querySelector(".descanso").appendChild(frase);
 
+    const descanso = document.querySelector(".descanso");
+
+    if (!descanso) {
+        return;
+    }
+
+
+    descanso.appendChild(frase);
+
+
+    // Aparecer
     setTimeout(() => {
+
         frase.classList.add("mostrar");
+
     }, 100);
 
+
+    // Desaparecer
     setTimeout(() => {
 
         frase.classList.remove("mostrar");
 
         setTimeout(() => {
-            frase.remove();
+
+            if (frase.parentNode) {
+                frase.remove();
+            }
+
         }, 600);
 
     }, 3500);
@@ -198,6 +299,12 @@ function terminarDescanso() {
         const mensaje =
             document.querySelector(".mensaje-descanso");
 
+
+        if (!mensaje) {
+            return;
+        }
+
+
         mensaje.innerHTML = `
 
             <p class="pequeno">
@@ -213,15 +320,25 @@ function terminarDescanso() {
                 🌷
             </p>
 
-            <button id="continuar" class="boton-continuar">
+            <button
+                id="continuar"
+                class="boton-continuar"
+            >
                 Seguir
             </button>
 
         `;
 
-        document.querySelectorAll(".nube").forEach(nube => {
-            nube.style.opacity = "0";
-        });
+
+        document
+            .querySelectorAll(".nube")
+            .forEach(nube => {
+
+                nube.style.opacity = "0";
+                nube.style.pointerEvents = "none";
+
+            });
+
 
         document
             .getElementById("continuar")
@@ -237,7 +354,7 @@ function terminarDescanso() {
 
 
 // ============================================
-// 6. ESCENA DE RESPIRACIÓN
+// 6. ESCENA DE RESPIRACIÓN 🌙
 // ============================================
 
 function mostrarRespiracion() {
@@ -323,7 +440,9 @@ function iniciarRespiracion() {
     const puntos =
         document.querySelectorAll(".punto");
 
+
     let ciclo = 0;
+
 
     setTimeout(() => {
         respirar();
@@ -337,7 +456,9 @@ function iniciarRespiracion() {
             terminarRespiracion();
 
             return;
+
         }
+
 
         puntos.forEach((punto, index) => {
 
@@ -347,6 +468,7 @@ function iniciarRespiracion() {
             );
 
         });
+
 
         titulo.textContent =
             "Respire conmigo un momento";
@@ -400,6 +522,7 @@ function terminarRespiracion() {
     const contenido =
         document.querySelector(".contenido-respiracion");
 
+
     contenido.innerHTML = `
 
         <p class="respiracion-pequeno">
@@ -429,6 +552,7 @@ function terminarRespiracion() {
 
     `;
 
+
     document
         .querySelector(".estrella-final-respiracion")
         .classList.add("aparecer-estrella");
@@ -455,9 +579,8 @@ function mostrarJardin() {
 
         <main class="jardin">
 
-            <!-- Cielo -->
-
             <div class="estrellas-jardin">
+
                 <span>✦</span>
                 <span>·</span>
                 <span>✧</span>
@@ -466,12 +589,11 @@ function mostrarJardin() {
                 <span>✧</span>
                 <span>✦</span>
                 <span>·</span>
+
             </div>
 
             <div class="luna-jardin"></div>
 
-
-            <!-- Contenido -->
 
             <section class="contenido-jardin">
 
@@ -490,42 +612,56 @@ function mostrarJardin() {
                 </p>
 
 
-                <!-- Jardín -->
-
                 <div class="flores">
 
-                    <button class="tulipan" data-flor="1">
+                    <button
+                        class="tulipan"
+                        data-flor="1"
+                    >
                         🌷
                     </button>
 
-                    <button class="tulipan" data-flor="2">
+                    <button
+                        class="tulipan"
+                        data-flor="2"
+                    >
                         🌷
                     </button>
 
-                    <button class="tulipan" data-flor="3">
+                    <button
+                        class="tulipan"
+                        data-flor="3"
+                    >
                         🌷
                     </button>
 
-                    <button class="tulipan" data-flor="4">
+                    <button
+                        class="tulipan"
+                        data-flor="4"
+                    >
                         🌷
                     </button>
 
-                    <button class="tulipan" data-flor="5">
+                    <button
+                        class="tulipan"
+                        data-flor="5"
+                    >
                         🌷
                     </button>
 
                 </div>
 
-
-                <!-- Contador -->
 
                 <div class="contador-flores">
-                    <span id="floresAbiertas">0</span>
+
+                    <span id="floresAbiertas">
+                        0
+                    </span>
+
                     de 5 flores descubiertas
+
                 </div>
 
-
-                <!-- Mensaje final -->
 
                 <div
                     id="finalJardin"
@@ -537,6 +673,7 @@ function mostrarJardin() {
         </main>
 
     `;
+
 
     activarTulipanes();
 
@@ -556,6 +693,7 @@ function activarTulipanes() {
         document.getElementById("floresAbiertas");
 
     let abiertas = 0;
+
 
     const mensajes = {
 
@@ -581,21 +719,25 @@ function activarTulipanes() {
 
         tulipan.addEventListener("click", () => {
 
-            // Evitar abrir la misma flor otra vez
+            if (
+                tulipan.classList.contains(
+                    "descubierto"
+                )
+            ) {
 
-            if (tulipan.classList.contains("descubierto")) {
                 return;
+
             }
 
 
-            tulipan.classList.add("descubierto");
+            tulipan.classList.add(
+                "descubierto"
+            );
 
 
             const numero =
                 tulipan.dataset.flor;
 
-
-            // Mostrar mensaje
 
             mostrarMensajeFlor(
                 mensajes[numero]
@@ -607,8 +749,6 @@ function activarTulipanes() {
             contador.textContent =
                 abiertas;
 
-
-            // Cuando se descubren las 5
 
             if (abiertas === 5) {
 
@@ -628,7 +768,7 @@ function activarTulipanes() {
 
 
 // ============================================
-// 11. MOSTRAR MENSAJE DE CADA TULIPÁN
+// 11. MENSAJE DE CADA TULIPÁN
 // ============================================
 
 function mostrarMensajeFlor(mensaje) {
@@ -636,11 +776,13 @@ function mostrarMensajeFlor(mensaje) {
     const tarjeta =
         document.createElement("div");
 
+
     tarjeta.className =
         "mensaje-flor";
 
 
     tarjeta.innerHTML = `
+
         <div class="flor-mensaje-icono">
             🌷
         </div>
@@ -648,6 +790,7 @@ function mostrarMensajeFlor(mensaje) {
         <p>
             ${mensaje}
         </p>
+
     `;
 
 
@@ -656,24 +799,27 @@ function mostrarMensajeFlor(mensaje) {
         .appendChild(tarjeta);
 
 
-    // Aparecer
-
     setTimeout(() => {
 
-        tarjeta.classList.add("mostrar");
+        tarjeta.classList.add(
+            "mostrar"
+        );
 
     }, 50);
 
 
-    // Desaparecer
-
     setTimeout(() => {
 
-        tarjeta.classList.remove("mostrar");
+        tarjeta.classList.remove(
+            "mostrar"
+        );
+
 
         setTimeout(() => {
 
-            tarjeta.remove();
+            if (tarjeta.parentNode) {
+                tarjeta.remove();
+            }
 
         }, 600);
 
@@ -688,14 +834,9 @@ function mostrarMensajeFlor(mensaje) {
 
 function terminarJardin() {
 
-    const contenido =
-        document.querySelector(".contenido-jardin");
-
     const final =
         document.getElementById("finalJardin");
 
-
-    // Las flores comienzan a iluminarse
 
     document
         .querySelectorAll(".tulipan")
@@ -711,8 +852,6 @@ function terminarJardin() {
 
         });
 
-
-    // Después aparece el mensaje
 
     setTimeout(() => {
 
@@ -748,7 +887,9 @@ function terminarJardin() {
         `;
 
 
-        final.classList.add("mostrar");
+        final.classList.add(
+            "mostrar"
+        );
 
 
         document
@@ -764,8 +905,6 @@ function terminarJardin() {
 }
 
 
-
-
 // ============================================
 // 13. ESCENA: MIRAR EL CIELO 🌅
 // ============================================
@@ -775,8 +914,6 @@ function mostrarAtardecer() {
     document.body.innerHTML = `
 
         <main class="atardecer">
-
-            <!-- Estrellas -->
 
             <div class="estrellas-atardecer">
 
@@ -792,17 +929,10 @@ function mostrarAtardecer() {
             </div>
 
 
-            <!-- Sol -->
-
             <div class="sol-atardecer"></div>
-
-
-            <!-- Luna -->
 
             <div class="luna-atardecer"></div>
 
-
-            <!-- Contenido -->
 
             <section class="contenido-atardecer">
 
@@ -853,8 +983,6 @@ function mostrarAtardecer() {
             </section>
 
 
-            <!-- Pequeño paisaje -->
-
             <div class="paisaje">
 
                 <div class="colina"></div>
@@ -891,27 +1019,37 @@ function iniciarAtardecer() {
 
 
     const frase =
-        document.getElementById("fraseAtardecer");
+        document.getElementById(
+            "fraseAtardecer"
+        );
+
 
     const puntos =
-        document.querySelectorAll(".punto-cielo");
+        document.querySelectorAll(
+            ".punto-cielo"
+        );
+
 
     const boton =
-        document.getElementById("continuarCarta");
+        document.getElementById(
+            "continuarCarta"
+        );
 
 
     let indice = 0;
 
 
-    // Ocultar botón al principio
-
     boton.style.opacity = "0";
-    boton.style.pointerEvents = "none";
+
+    boton.style.pointerEvents =
+        "none";
 
 
     function cambiarFrase() {
 
-        if (indice >= frases.length) {
+        if (
+            indice >= frases.length
+        ) {
 
             terminarAtardecer();
 
@@ -920,7 +1058,9 @@ function iniciarAtardecer() {
         }
 
 
-        frase.classList.remove("mostrar-frase");
+        frase.classList.remove(
+            "mostrar-frase"
+        );
 
 
         setTimeout(() => {
@@ -933,14 +1073,17 @@ function iniciarAtardecer() {
             );
 
 
-            puntos.forEach((punto, i) => {
+            puntos.forEach(
+                (punto, i) => {
 
-                punto.classList.toggle(
-                    "activo",
-                    i === indice
-                );
+                    punto.classList.toggle(
+                        "activo",
+                        i === indice
+                    );
 
-            });
+                }
+            );
+
 
         }, 500);
 
@@ -950,8 +1093,6 @@ function iniciarAtardecer() {
     }
 
 
-    // Primera frase
-
     setTimeout(() => {
 
         frase.classList.add(
@@ -960,8 +1101,6 @@ function iniciarAtardecer() {
 
     }, 800);
 
-
-    // Cambiar frases
 
     setTimeout(() => {
 
@@ -991,11 +1130,14 @@ function iniciarAtardecer() {
     }, 14000);
 
 
-    boton.addEventListener("click", () => {
+    boton.addEventListener(
+        "click",
+        () => {
 
-        mostrarCarta();
+            mostrarCarta();
 
-    });
+        }
+    );
 
 }
 
@@ -1007,13 +1149,21 @@ function iniciarAtardecer() {
 function terminarAtardecer() {
 
     const frase =
-        document.getElementById("fraseAtardecer");
+        document.getElementById(
+            "fraseAtardecer"
+        );
+
 
     const puntos =
-        document.getElementById("puntosAtardecer");
+        document.getElementById(
+            "puntosAtardecer"
+        );
+
 
     const boton =
-        document.getElementById("continuarCarta");
+        document.getElementById(
+            "continuarCarta"
+        );
 
 
     frase.textContent =
@@ -1025,12 +1175,14 @@ function terminarAtardecer() {
     );
 
 
-    puntos.style.opacity = "0";
+    puntos.style.opacity =
+        "0";
 
 
     setTimeout(() => {
 
-        boton.style.opacity = "1";
+        boton.style.opacity =
+            "1";
 
         boton.style.pointerEvents =
             "auto";
@@ -1050,8 +1202,6 @@ function mostrarCarta() {
 
         <main class="carta-final">
 
-            <!-- Estrellas -->
-
             <div class="estrellas-carta">
 
                 <span>✦</span>
@@ -1066,12 +1216,8 @@ function mostrarCarta() {
             </div>
 
 
-            <!-- Luna -->
-
             <div class="luna-carta"></div>
 
-
-            <!-- Introducción -->
 
             <section
                 id="introduccionCarta"
@@ -1084,11 +1230,11 @@ function mostrarCarta() {
 
                 <h2>
                     Hay algo que quería
-                    <span>decirle desde hace un tiempo...</span>
+                    <span>
+                        decirle desde hace un tiempo...
+                    </span>
                 </h2>
 
-
-                <!-- Sobre -->
 
                 <button
                     id="sobre"
@@ -1114,8 +1260,6 @@ function mostrarCarta() {
             </section>
 
 
-            <!-- Carta -->
-
             <section
                 id="contenidoCarta"
                 class="contenido-carta"
@@ -1131,7 +1275,7 @@ function mostrarCarta() {
                     <p>
                         Quería dejarle estas palabras
                         aquí porque hay cosas que a veces
-                        me cuesta decir en persona y como no 
+                        me cuesta decir en persona y como no
                         nos hemos visto.
                     </p>
 
@@ -1228,7 +1372,7 @@ function mostrarCarta() {
 
 
 // ============================================
-// 17. ABRIR EL SOBRE
+// 17. ABRIR EL SOBRE 💌
 // ============================================
 
 function activarSobre() {
@@ -1236,40 +1380,57 @@ function activarSobre() {
     const sobre =
         document.getElementById("sobre");
 
+
     const introduccion =
-        document.getElementById("introduccionCarta");
+        document.getElementById(
+            "introduccionCarta"
+        );
+
 
     const carta =
-        document.getElementById("contenidoCarta");
+        document.getElementById(
+            "contenidoCarta"
+        );
 
 
-    sobre.addEventListener("click", () => {
+    sobre.addEventListener(
+        "click",
+        () => {
 
-        if (sobre.classList.contains("abierto")) {
-            return;
+            if (
+                sobre.classList.contains(
+                    "abierto"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            sobre.classList.add(
+                "abierto"
+            );
+
+
+            setTimeout(() => {
+
+                introduccion.classList.add(
+                    "ocultar-carta"
+                );
+
+            }, 1200);
+
+
+            setTimeout(() => {
+
+                carta.classList.add(
+                    "mostrar-carta"
+                );
+
+            }, 1700);
+
         }
-
-
-        sobre.classList.add("abierto");
-
-
-        setTimeout(() => {
-
-            introduccion.classList.add(
-                "ocultar-carta"
-            );
-
-        }, 1200);
-
-
-        setTimeout(() => {
-
-            carta.classList.add(
-                "mostrar-carta"
-            );
-
-        }, 1700);
-
-    });
+    );
 
 }
